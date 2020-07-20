@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="dv">点击click时间----click</div>
+
+</body>
+<script>
+
+    //封装 --- 事件类型
+    let addEvent = function (el, type, fn) {
+        if (window.addEventListener) return el.addEventListener(type, fn, false)
+        else if (window.attachEvent) return el.attachEvent(`on${type}`, fn)
+        addEvent(el, type, fn)
+    }
+ 
+    addEvent(document.getElementById("dv"), "click", function () {
+        console.log(this);
+    })
+
+
+
+</script>
+
+</html>

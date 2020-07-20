@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>策略模式</title>
+</head>
+
+<body>
+    <form id="from" autocomplete="off">
+        <p> 账号:&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="username" id=""> </p>
+        <p> 密码:&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="password" id=""> </p>
+        <p> 手机号:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="tel" id=""> </p>
+        <button>提交</button>
+    </form>
+
+    <script>
+        //执行事件
+        let form = document.querySelector("#from")
+        form.onsubmit = function (e) {
+            e.preventDefault()
+            let str = ['username', 'password', 'tel'], arr = [];
+            str.forEach((x, i) => arr[i] = this[x])
+            let err = valdata(arr)
+            if (err) alert(err)
+            else alert("已提交信息!")
+        }
+
+        //业务逻辑层---剥离层
+        function valdata(arr) {
+            let F = new FormRule();
+            F.add(arr[0], [{ type: "isNull", err: "账号不可以为空" }, { type: "isMinLeng:6", err: "账号长度不可以小于6位" }])
+            F.add(arr[1], [{ type: "isNull", err: "密码不可以为空" }, { type: "isMinLeng:5", err: "账号长度不可以小于5位" }])
+            F.add(arr[2], [{ type: "isTel", err: "手机号不正确" }])
+            return F.start()
+        }
+
+        //调用类对象
+        function FormRule() { this.cache = [] }
+        FormRule.prototype.add = function (dom, rules) {
+            let _this = this;
+            for (let i = 0, rule; rule = rules[i++];) {
+                let type = rule.type.split(":")
+                let err = rule.err;
+                _this.cache.push(function () {
+                    let startegy = type.shift()
+                    type.unshift(dom.value)
+                    type.push(err)
+                    let S = new Stargets()
+                    return S[startegy].apply(dom, type)
+                })
+            }
+        }
+        FormRule.prototype.start = function () {
+            for (let i = 0, valfun; valfun = this.cache[i++];) {
+                let err = valfun()
+                if (err) return err
+            }
+        }
+
+        //策略对象
+        function Stargets() { }
+        Stargets.prototype.isNull = function (val, err) {
+            if (val == "") return err
+        }
+        Stargets.prototype.isMinLeng = function (val, leng, err) {
+            if (val.length <= leng) return err
+        }
+        Stargets.prototype.isTel = function (val, err) {
+            if (!/(^1[3|5|8][0-9]{9}$)/g.test(val)) return err
+        }
+
+
+    </script>
+</body>
+
+</html>

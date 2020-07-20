@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <ul id="ul"></ul>
+    </div>
+</body>
+<script>
+    //一口气渲染1w调数据
+    let li = new Array(10000)
+    li = Object.keys(Array.from(li).fill(0))
+
+    let ul = document.getElementById("ul")
+    const render = timeOut(li, function (x) {
+        let li = document.createElement("li")
+        li.innerHTML = x
+        ul.appendChild(li)
+    }, 8)
+    render(li)
+    //修改方法---延迟渲染法
+    function timeOut(arr, fn, count) {
+        let len = arr.length, t;
+        const statr = function () {
+            let min = Math.min(count || t || len);
+            for (let index = 0; index < min; index++) {
+                fn(arr.shift())
+            }
+        }
+        return function () {
+            t = setInterval(function () {
+                if (arr.length == 0) return clearInterval(t)
+                statr()
+            }, 200)
+        }
+    }
+
+
+
+
+</script>
+
+</html>

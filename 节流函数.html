@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="dv">疯狂点击click</div>
+</body>
+<script>
+    let dv = document.querySelector("#dv")
+    dv.onclick = touch(function () {
+        console.log("这里是节流函数里面出发的!!!");
+    }, 1000)
+    function touch(fn, interval) {
+        let _fn = fn, t, ftime = true, i = 0;
+        return function () {
+            let _this = this;
+            let arg = arguments
+            if (ftime) {            //首次执行
+                _fn.apply(_this, arg)
+                return ftime = false;
+            }
+            if (t) return false;
+            t = setTimeout(function () {
+                clearTimeout(t)
+                t = null;
+                _fn.apply(_this, arg)
+            }, interval || 500)
+        }
+    }
+
+
+</script>
+
+</html>
