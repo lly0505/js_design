@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        let oder500 = function (ty, pay, stock) {
+            if (ty == 1 && pay == true) {
+                console.log("500元定金预定 得100元的优惠券")
+            }
+            else return "nextSuccessor"
+        }
+
+        let oder200 = function (ty, pay, stock) {
+            if (ty == 2 && pay == true) {
+                console.log("200元定金预定 得50元的优惠券")
+            }
+            else return "nextSuccessor"
+        }
+
+        let oder500 = function (ty, pay, stock) {
+            if (stock > 0) {
+                console.log("普通购买 无优惠券")
+            }
+            else {
+                console.log("手机库存不足")
+            }
+        }
+
+
+
+    </script>
+
+
+</body>
+
+</html>

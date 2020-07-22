@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+<script>
+    const Obj = {
+        list: {},
+        $on(key, fn) {
+            if (!this.list[key]) this.list[key] = [];
+            this.list[key].push(fn)
+        },
+        $emit() {
+            let key = Array.prototype.shift.call(arguments),
+                fns = this.list[key]
+            if (!fns || fns.length <= 0) return false;
+            fns.map(x => x.apply(this, arguments))
+        },
+        $off(key, fn) {
+            let fns = this.list[key]
+            if (!fns) return false;
+            if (!fn) { fns = [] }
+            else {
+                for (let i = fns.length - 1; i >= 0; i--) {
+                    if (fns[i] === fn) fns.splice(i, 1)
+                }
+            }
+        },
+        on(){
+            this.$on("xx",(str,a)=>{
+                console.log(str,a)
+            })
+        },
+        emit(){
+            this.$emit('xx',"测试","668899")
+        }
+    };
+    Obj.on()
+    Obj.emit()
+    // Obj.$on("x6688", (str) => {
+    //     console.log(str)
+    // })
+    // Obj.$on("x9988", (str) => {
+    //     console.log(str)
+    // })
+    // Obj.$off("x9988", "666999888")
+    // Obj.$emit("x6688", "测试")
+
+
+</script>
+
+</html>

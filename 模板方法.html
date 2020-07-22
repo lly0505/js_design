@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        // // 咖啡
+        // let Coffee={
+        //     boilwater(){
+        //         console.log("把水煮沸")
+        //     },
+        //     brewCoffeeGriends(){
+        //         console.log("用沸水冲跑咖啡");
+        //     },
+        //     pourIncup(){
+        //         console.log("把咖啡倒进杯子里");
+        //     },
+        //     addSug(){
+        //         console.log("加入糖and牛奶");
+        //     },
+        //     init(){
+        //         this.boilwater();
+        //         this.brewCoffeeGriends()
+        //         this.pourIncup()
+        //         this.addSug()
+        //     }
+        // }
+
+        // //茶
+        // let Tea={
+        //     boilwater(){
+        //         console.log("把水煮沸")
+        //     },
+        //     brewCoffeeGriends(){
+        //         console.log("用沸水冲跑茶叶");
+        //     },
+        //     pourIncup(){
+        //         console.log("把茶叶倒进杯子里");
+        //     },
+        //     addSug(){
+        //         console.log("加入柠檬");
+        //     },
+        //     init(){
+        //         this.boilwater();
+        //         this.brewCoffeeGriends()
+        //         this.pourIncup()
+        //         this.addSug()
+        //     }
+        // }
+        // Coffee.init()
+        // Tea.init()
+
+
+
+        //抽象类写法 
+        // let Beverage = {
+        //     boilwater() {
+        //         console.log("把水煮沸")
+        //     },
+        //     brew() { },
+        //     pourIncup() { },
+        //     addSug() { },
+        //     init() {
+        //         this.boilwater();
+        //         this.brew()
+        //         this.pourIncup()
+        //         this.addSug()
+        //     }
+        // }
+
+        // let Coffee = {
+        //     // brew() {
+        //     //     console.log("用沸水冲跑咖啡");
+        //     // },
+        //     pourIncup() {
+        //         console.log("把咖啡倒进杯子里");
+        //     },
+        //     addSug() {
+        //         console.log("加入糖and牛奶");
+        //     },
+        //     prototype:Beverage
+        // }
+        // let o=Object.assign(Beverage,Coffee)
+        // o.init()
+
+
+        // 钩子函数
+        let Bage = function (obj) {
+            let boilwater = obj.boilwater || function () {
+                console.log("把水煮沸")
+            }
+            let brew = obj.brew || function () {
+                throw new Error("必填 brew")
+            }
+            let pourIncup = obj.pourIncup || function () {
+                throw new Error("必填 pourIncup")
+            }
+            let addSug = obj.addSug || function () {
+                throw new Error("必填 addSug")
+            }
+            return {
+                init() {
+                    boilwater()
+                    brew()
+                    pourIncup()
+                    addSug()
+                }
+            }
+        }
+        Bage({
+            brew() {
+                console.log("用沸水冲跑咖啡");
+            },
+            pourIncup() {
+                console.log("把咖啡倒进杯子里");
+            },
+            addSug() {
+                console.log("加入糖and牛奶");
+            },
+        }).init()
+
+
+
+    </script>
+</body>
+
+</html>
