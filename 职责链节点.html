@@ -10,21 +10,21 @@
 <body>
 
     <script>
-        let oder500 = function (ty, pay, stock) {
+        let order500 = function (ty, pay, stock) {
             if (ty == 1 && pay == true) {
                 console.log("500元定金预定 得100元的优惠券")
             }
-            else return "nextSuccessor"
+            else return "next"
         }
 
-        let oder200 = function (ty, pay, stock) {
+        let order200 = function (ty, pay, stock) {
             if (ty == 2 && pay == true) {
                 console.log("200元定金预定 得50元的优惠券")
             }
-            else return "nextSuccessor"
+            else return "next"
         }
 
-        let oder500 = function (ty, pay, stock) {
+        let orderNormal = function (ty, pay, stock) {
             if (stock > 0) {
                 console.log("普通购买 无优惠券")
             }
@@ -33,6 +33,59 @@
             }
         }
 
+        class Chain {
+            fn;
+            successor = null;
+            constructor(fn) {
+                this.fn = fn
+            }
+            setNextSuccessor(suc) {
+      
+                return this.successor = suc
+            }
+            passRequest() {
+                let ret = this.fn.apply(this, arguments)
+                if (ret == "next") {
+                    return this.successor && this.successor.passRequest.apply(this.successor, arguments)
+                }
+                return ret
+            }
+            next() {
+                return this.successor && this.successor.passRequest.apply(this.successor, arguments)
+            }
+        }
+
+        /**  同步  **/
+        // var chainOrder500 = new Chain(order500);
+        // var chainOrder200 = new Chain(order200);
+        // var chainOrderNormal = new Chain(orderNormal);
+
+        // chainOrder500.setNextSuccessor(chainOrder200)
+        // chainOrder200.setNextSuccessor(chainOrderNormal)
+
+        // chainOrder500.passRequest(1, true, 500);
+        // chainOrder500.passRequest(2, true, 500);
+        // chainOrder500.passRequest(3, true, 500);
+        // chainOrder500.passRequest(1, false, 0);
+
+
+        /**  异步 **/
+        let fn1 = new Chain(() => {
+            console.log(1);
+            return 'next'
+        })
+        let fn2 = new Chain(function () {
+            console.log(2);
+            let _this = this;
+            setTimeout(() => {
+                _this.next()
+            }, 1000)
+        })
+        let fn3 = new Chain(function () {
+            console.log(3);
+        })
+        fn1.setNextSuccessor(fn2).setNextSuccessor(fn3)
+        fn1.passRequest()
 
 
     </script>
