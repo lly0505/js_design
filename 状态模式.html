@@ -44,7 +44,7 @@
             }
             buttonWasPressed(callback) {
                 if (!callback) throw new Error("父类 buttonWasPressed 方法必须重写")
-                callback()
+                callback(this.str)
                 this.light.setState(this.light[this.str])
             }
         }

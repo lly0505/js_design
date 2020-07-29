@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        let mult = function () {
+            let a = 1;
+            for (let i = 0; i < arguments.length; i++) {
+                a = a * arguments[i]
+            }
+            return a
+        }
+
+        let plus = function () {
+            let a = 0;
+            for (let i = 0; i < arguments.length; i++) {
+                a = a + arguments[i]
+            }
+            return a
+        }
+
+        let createProxy = function (fn) {
+            let cache = {}
+            return function () {
+                let ages = Array.prototype.join.call(arguments, ",")
+                if (ages in cache) return cache[ages]
+                return cache[ages] = fn.apply(this, arguments)
+            }
+        }
+        let proxyMult = createProxy(mult)
+        let proxyPlus = createProxy(plus)
+        class Obj {
+            mult = createProxy(mult)
+            plus = createProxy(plus)
+        }
+        let obj = new Obj()
+        console.log(obj.mult(1, 2, 3, 4));
+        console.log(obj.plus(1, 2, 3, 4));
+
+    </script>
+</body>
+
+</html>
