@@ -1,17 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <script>
-        
-        
+        class Player {
+            constructor(name, teamColor) {
+                this.name = name;
+                this.teamColor = teamColor;
+                this.state = "alive"
+            }
+            win() {
+                console.log(this.name + "won");
+            }
+            lose() {
+                console.log(this.name + "lost");
+            }
+            die() {
+                this.state = "dead"
+                PlayerDirector.receiveMessage("playDead", this)  //通知中介者,玩家死亡
+            }
+            remove() {
+                PlayerDirector.receiveMessage("removePlayer", this) //通知中介者,移除一个玩家
+            }
+            changeTeam(color) {
+                PlayerDirector.receiveMessage("changeTeam", this, color) //通知中介者,移除一个玩家
+            }
+        }
+        let playFactory=function(name,color){
+            let newPlayer=new Player(name,color)
+            PlayerDirector.receiveMessage("addPlayer",newPlayer)
+            return newPlayer
+        }
 
 
 
     </script>
 </body>
+
 </html>

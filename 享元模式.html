@@ -85,7 +85,7 @@
         Upload.prototype.delFile = function (id) {
             UploadManage.setExterState(id, this)
             if (this.fileSize < 3000) return this.dom.parentNode.removeChild(this.dom)
-            if (window.confirm("确定删除文件?" + this.fileName)) return this.dom.parentNode.removeChild(this.dom)
+            if (confirm("确定删除文件?" + this.fileName)) return this.dom.parentNode.removeChild(this.dom)
         }
         let UploadFactory = (
             function () {
@@ -131,7 +131,7 @@
             }
         )()
         let id = 0;
-        window.startUpload = function (uploadType, files) {
+        startUpload = function (uploadType, files) {
             for (let i = 0, file; file = files[i++];) {
                 let obj = UploadManage.add(++id, uploadType, file.fileName, file.fileSize)
             }

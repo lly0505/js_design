@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // class OffState {
+        //     constructor(light,str) {
+        //         this.light = light
+        //     }
+        //     buttonWasPressed() { 
+        //         console.log("弱光");
+        //         this.light.setState(this.light.weakState)
+        //     }
+        // }
+        // class WeakState {
+        //     constructor(light,str) {
+        //         this.light = light
+        //     }
+        //     buttonWasPressed() {
+        //         console.log("强光");
+        //         this.light.setState(this.light.strongState)
+        //     }
+        // }
+        // class StrongState {
+        //     constructor(light,str) {
+        //         this.light = light
+        //     }
+        //     buttonWasPressed() {
+        //         console.log("关灯");
+        //         this.light.setState(this.light.offState)
+        //     }
+        // }
+
+        class State {
+            constructor([light, str]) {
+                this.light = light
+                this.str = str;
+            }
+            buttonWasPressed(callback) {
+                if (!callback) throw new Error("父类 buttonWasPressed 方法必须重写")
+                callback()
+                this.light.setState(this.light[this.str])
+            }
+        }
+        class StateObj {
+            constructor() {
+                this.offState = new OffState(this, "weakState")
+                this.weakState = new WeakState(this, "strongState")
+                this.strongState = new StrongState(this, "offState")
+            }
+        }
+        class OffState extends State {
+            constructor(...props) {
+                super(props)
+                this.buttonWasPressed = this.buttonWasPressed.bind(this, () => { console.log("弱光") })
+            }
+        }
+        class WeakState extends State {
+            constructor(...props) {
+                super(props)
+                this.buttonWasPressed = this.buttonWasPressed.bind(this, () => { console.log("强光") })
+            }
+        }
+        class StrongState extends State {
+            constructor(...props) {
+                super(props)
+                this.buttonWasPressed = this.buttonWasPressed.bind(this, () => { console.log("关灯") })
+            }
+        }
+        class Light extends StateObj {
+            constructor() {
+                super()
+                this.button = null
+            }
+            init() {
+                let btn = document.createElement("button"), _t = this
+                this.button = document.body.appendChild(btn)
+                this.button.innerText = "开关"
+                this.currState = this.offState;
+                this.button.onclick = function () {
+                    _t.currState.buttonWasPressed()
+                }
+            }
+            setState(newState) {
+                this.currState = newState
+            }
+        }
+        new Light().init()
+
+
+
+
+    </script>
+</body>
+
+</html>
